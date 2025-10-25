@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import ResumeSection from "./components/ResumeSection.jsx";
 
 /* ────────────────────────────────────────────── */
 /* Main Component */
 /* ────────────────────────────────────────────── */
 export default function App() {
+  // NEW: State to control resume visibility
+  const [showResume, setShowResume] = useState(false);
+
+  // helper to toggle resume and scroll
+  const handleResumeClick = () => {
+    setShowResume(true);
+    // after showing resume, scroll to it smoothly
+    setTimeout(() => {
+      const el = document.getElementById("resume");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 0);
+  };
+
   return (
     <main className="min-h-screen bg-neutral-950 text-neutral-100 font-sans selection:bg-indigo-500/40 selection:text-white">
       {/* Decorative gradient background */}
@@ -39,6 +55,15 @@ export default function App() {
                 <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-indigo-400 to-sky-400 transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
+
+            {/* NEW: Resume tab in header */}
+            <button
+              onClick={handleResumeClick}
+              className="hover:text-white transition-colors relative group"
+            >
+              Resume
+              <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-indigo-400 to-sky-400 transition-all duration-300 group-hover:w-full" />
+            </button>
           </nav>
 
           <a
@@ -353,6 +378,9 @@ export default function App() {
           </div>
         </footer>
       </section>
+
+      {/* RESUME (conditional render) */}
+      {showResume && <ResumeSection />}
     </main>
   );
 }
