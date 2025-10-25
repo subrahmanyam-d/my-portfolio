@@ -1,0 +1,91 @@
+# ========================================
+# Node / React / Vite Project .gitignore
+# ========================================
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build output
+dist/
+build/
+.cache/
+.tmp/
+out/
+
+# Local environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor / IDE folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package lock files (optional - uncomment if you want consistent builds)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# NPM cache and artifacts
+.npm/
+.npmrc
+
+# Test outputs
+jest-html-reporters-*.html
+test-results/
+
+# Miscellaneous
+*.pid
+*.seed
+*.pid.lock
+
+# Local runtime files
+.pnp.*
+.cache-loader/
+.vite/
+vite.config.timestamp-*.mjs
+vite-plugin-*
+vite_dist/
+
+# React-specific
+*.env.development
+*.env.production
+*.env.test
+*.env.local
+*.env.*.local
+
+# ESLint / Prettier
+.eslintcache
+.prettierignore
+
+# ===============================
+# Custom project-specific ignores
+# ===============================
+# Frontend static files or local JSON configs
+/public/mock-data.json
+/public/temp/
