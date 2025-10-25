@@ -55,6 +55,7 @@ export default function App() {
         id="about"
         className="max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-start md:items-center gap-12"
       >
+        {/* LEFT: Intro text */}
         <div className="flex-1">
           <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight">
             Backend / Platform Engineer
@@ -77,6 +78,34 @@ export default function App() {
             Kubernetes, Solace/RabbitMQ, and secure Mongo access tooling.
           </p>
 
+          {/* "About me" deeper bio */}
+          <div className="mt-6 text-neutral-300 text-sm leading-relaxed max-w-xl space-y-4">
+            <p>
+              I specialize in building and operating event-driven microservices
+              using Spring Boot, MongoDB, RabbitMQ, Solace, Docker, and
+              Kubernetes, with CI/CD and deployment using Azure DevOps and AWS.
+            </p>
+            <p>
+              I’ve led core services in HP’s Stratus eCommerce platform such as
+              Event Handler, Solace Consumer, and RPL (Restricted Party List).
+              My work includes secure message routing, LaunchDarkly-driven
+              runtime config, MongoDB performance tuning, and production-grade
+              reliability/monitoring using Splunk and internal dashboards.
+            </p>
+            <p>
+              I also build developer-facing platforms like secure MongoDB
+              tunneling (temporary auditable access instead of permanent DB
+              exposure) and Mock Genie (mock downstream services to unblock
+              lower env dependencies). I care about stability, traceability,
+              and making teams ship faster.
+            </p>
+            <p>
+              I’m actively growing in DevOps, Cloud, and Generative AI. I
+              believe in clean architecture + automation + observability =
+              production confidence.
+            </p>
+          </div>
+
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <a
               href="#projects"
@@ -93,13 +122,39 @@ export default function App() {
           </div>
         </div>
 
+        {/* RIGHT: Profile card with photo and core focus */}
         <div className="flex-1 w-full">
           <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 shadow-[0_40px_120px_rgba(0,0,0,0.9)] relative overflow-hidden">
+            {/* glow accent */}
             <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.4),rgba(0,0,0,0)_70%)] blur-2xl opacity-30 pointer-events-none" />
-            <div className="text-xs uppercase text-neutral-400 font-medium tracking-wide mb-4 flex items-center gap-2">
+
+            {/* Photo */}
+            <div className="flex flex-col items-center text-center">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(56,189,248,0.4,)_0%,rgba(0,0,0,0)_70%)] blur-xl opacity-30" />
+                <img
+                  src="/profile.jpg"
+                  alt="D Subrahmanyam"
+                  className="relative w-32 h-32 rounded-full object-cover border-2 border-sky-400 shadow-[0_25px_80px_rgba(56,189,248,0.4)]"
+                />
+              </div>
+
+              <div className="mt-4">
+                <div className="text-white font-semibold text-base">
+                  D Subrahmanyam
+                </div>
+                <div className="text-[12px] text-neutral-400 font-medium tracking-wide uppercase">
+                  Technical Lead @ HP
+                </div>
+              </div>
+            </div>
+
+            {/* Core focus list */}
+            <div className="text-xs uppercase text-neutral-400 font-medium tracking-wide mt-6 mb-4 flex items-center gap-2">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.8)]" />
               Core Focus
             </div>
+
             <ul className="space-y-3 text-sm text-neutral-200">
               {[
                 "Secure microservices in Java / Spring Boot and Go",
