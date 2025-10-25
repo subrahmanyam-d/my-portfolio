@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import ResumeSection from "./components/ResumeSection.jsx";
 
-/* ────────────────────────────────────────────── */
-/* Main Component */
-/* ────────────────────────────────────────────── */
 export default function App() {
-  // NEW: State to control resume visibility
+  // start hidden
   const [showResume, setShowResume] = useState(false);
 
-  // helper to toggle resume and scroll
+  // mobile nav open/close
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const toggleMobile = () => {
+    setMobileOpen((prev) => !prev);
+  };
+
   const handleResumeClick = () => {
     setShowResume(true);
-    // after showing resume, scroll to it smoothly
+    // also close mobile drawer if it's open
+    setMobileOpen(false);
+
     setTimeout(() => {
       const el = document.getElementById("resume");
       if (el) {
@@ -21,24 +25,120 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-neutral-100 font-sans selection:bg-indigo-500/40 selection:text-white">
-      {/* Decorative gradient background */}
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#0a0a0a",
+        color: "#f5f5f5",
+        fontFamily:
+          '-apple-system,BlinkMacSystemFont,"Inter","Roboto","Segoe UI",sans-serif',
+      }}
+    >
+      {/* radial glow background */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10 flex items-center justify-center"
-        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: -1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          pointerEvents: "none",
+        }}
       >
-        <div className="h-[600px] w-[600px] rounded-full bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.18)_0%,rgba(16,185,129,0)_70%)] blur-3xl opacity-60" />
+        <div
+          style={{
+            height: 600,
+            width: 600,
+            borderRadius: "9999px",
+            filter: "blur(60px)",
+            opacity: 0.5,
+            background:
+              "radial-gradient(circle at 20% 20%, rgba(99,102,241,0.18) 0%, rgba(16,185,129,0) 70%)",
+          }}
+        />
       </div>
 
-      {/* NAV / HEADER */}
-      <header className="sticky top-0 z-50 bg-neutral-950/70 backdrop-blur border-b border-neutral-800/70 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8)]">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-lg font-semibold tracking-tight text-white flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_20px_rgba(99,102,241,0.8)]" />
-            <span>D Subrahmanyam</span>
-          </div>
+      {/* NAVBAR */}
+      <nav
+        className="navbar navbar-expand-md navbar-dark"
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          backgroundColor: "rgba(10,10,10,0.7)",
+          backdropFilter: "blur(6px)",
+          borderBottom: "1px solid rgba(82,82,82,0.6)",
+          boxShadow: "0 10px 30px -10px rgba(0,0,0,0.8)",
+        }}
+      >
+        <div className="container d-flex align-items-center w-100">
+          {/* Brand */}
+          <a
+            className="navbar-brand d-flex align-items-center"
+            href="#about"
+            style={{
+              color: "white",
+              fontWeight: 600,
+              fontSize: "1rem",
+              textDecoration: "none",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                height: "8px",
+                width: "8px",
+                borderRadius: "9999px",
+                background:
+                  "linear-gradient(to right,#6366f1,#38bdf8)",
+                boxShadow: "0 0 20px rgba(99,102,241,0.8)",
+                marginRight: "8px",
+              }}
+            />
+            D Subrahmanyam
+          </a>
 
-          <nav className="hidden md:flex gap-6 text-sm text-neutral-300">
+          {/* Hamburger (ALWAYS visible on small) */}
+          <button
+            className="d-md-none btn p-2"
+            onClick={toggleMobile}
+            style={{
+              border: "1px solid rgba(245,245,245,0.4)",
+              borderRadius: "0.5rem",
+              backgroundColor: "transparent",
+              lineHeight: 0,
+            }}
+            aria-label="Toggle navigation"
+          >
+            {/* simple 3-line icon, no Bootstrap JS dependency */}
+            <div
+              style={{
+                width: "22px",
+                height: "2px",
+                backgroundColor: "#fff",
+                marginBottom: "5px",
+              }}
+            />
+            <div
+              style={{
+                width: "22px",
+                height: "2px",
+                backgroundColor: "#fff",
+                marginBottom: "5px",
+              }}
+            />
+            <div
+              style={{
+                width: "22px",
+                height: "2px",
+                backgroundColor: "#fff",
+              }}
+            />
+          </button>
+
+          {/* Desktop links */}
+          <ul className="navbar-nav ms-auto mb-0 gap-md-3 d-none d-md-flex align-items-md-center">
             {[
               ["About", "#about"],
               ["Skills", "#skills"],
@@ -46,154 +146,401 @@ export default function App() {
               ["Experience", "#experience"],
               ["Contact", "#contact"],
             ].map(([label, link]) => (
-              <a
-                key={label}
-                href={link}
-                className="hover:text-white transition-colors relative group"
-              >
-                {label}
-                <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-indigo-400 to-sky-400 transition-all duration-300 group-hover:w-full" />
-              </a>
+              <li className="nav-item" key={label}>
+                <a
+                  className="nav-link"
+                  href={link}
+                  style={{
+                    color: "#a3a3a3",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {label}
+                </a>
+              </li>
             ))}
 
-            {/* NEW: Resume tab in header */}
-            <button
-              onClick={handleResumeClick}
-              className="hover:text-white transition-colors relative group"
-            >
-              Resume
-              <span className="absolute left-0 -bottom-1 h-px w-0 bg-gradient-to-r from-indigo-400 to-sky-400 transition-all duration-300 group-hover:w-full" />
-            </button>
-          </nav>
+            {/* Resume tab */}
+            <li className="nav-item">
+              <button
+                className="btn btn-link nav-link p-0"
+                style={{
+                  color: "#a3a3a3",
+                  fontSize: "0.9rem",
+                  textDecoration: "none",
+                }}
+                onClick={handleResumeClick}
+              >
+                Resume
+              </button>
+            </li>
 
-          <a
-            href="#contact"
-            className="text-xs font-medium bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-500 hover:to-sky-400 text-white px-3 py-2 rounded-lg shadow-[0_15px_40px_rgba(56,189,248,0.4)] transition-all"
-          >
-            Get in touch
-          </a>
+            {/* Contact CTA */}
+            <li className="nav-item">
+              <a
+                href="#contact"
+                className="btn btn-sm"
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 500,
+                  color: "#fff",
+                  background:
+                    "linear-gradient(to right,#4f46e5,#0ea5e9)",
+                  border: "none",
+                  borderRadius: "0.5rem",
+                  boxShadow: "0 15px 40px rgba(56,189,248,0.4)",
+                }}
+              >
+                Get in touch
+              </a>
+            </li>
+          </ul>
         </div>
-      </header>
+
+        {/* Mobile dropdown (custom instead of Bootstrap collapse) */}
+        {mobileOpen && (
+          <div
+            className="w-100 d-md-none"
+            style={{
+              backgroundColor: "rgba(10,10,10,0.95)",
+              borderTop: "1px solid rgba(82,82,82,0.6)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.9)",
+            }}
+          >
+            <ul
+              className="navbar-nav px-3 py-3"
+              style={{ rowGap: "0.5rem" }}
+            >
+              {[
+                ["About", "#about"],
+                ["Skills", "#skills"],
+                ["Projects", "#projects"],
+                ["Experience", "#experience"],
+                ["Contact", "#contact"],
+              ].map(([label, link]) => (
+                <li className="nav-item" key={label}>
+                  <a
+                    className="nav-link"
+                    href={link}
+                    style={{
+                      color: "#a3a3a3",
+                      fontSize: "0.9rem",
+                    }}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+
+              <li className="nav-item">
+                <button
+                  className="btn btn-link nav-link p-0"
+                  style={{
+                    color: "#a3a3a3",
+                    fontSize: "0.9rem",
+                    textDecoration: "none",
+                  }}
+                  onClick={handleResumeClick}
+                >
+                  Resume
+                </button>
+              </li>
+
+              <li className="nav-item mt-2">
+                <a
+                  href="#contact"
+                  className="btn w-100 text-white"
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 500,
+                    background:
+                      "linear-gradient(to right,#4f46e5,#0ea5e9)",
+                    border: "none",
+                    borderRadius: "0.5rem",
+                    boxShadow:
+                      "0 15px 40px rgba(56,189,248,0.4)",
+                  }}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Get in touch
+                </a>
+              </li>
+            </ul>
+          </div>
+        )}
+      </nav>
 
       {/* ABOUT / HERO */}
       <section
         id="about"
-        className="max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-start md:items-center gap-12"
+        className="container py-5 py-md-5"
+        style={{ color: "#d4d4d8" }}
       >
-        {/* LEFT: Intro text */}
-        <div className="flex-1">
-          <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight">
-            Backend / Platform Engineer
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-300 drop-shadow-[0_0_20px_rgba(16,185,129,0.4)]">
-              Java • Go • Cloud • Messaging
-            </span>
-          </h1>
+        <div className="row gy-4 align-items-start">
+          {/* LEFT column */}
+          <div className="col-12 col-md-6">
+            <h1
+              className="fw-semibold"
+              style={{
+                color: "#fff",
+                fontSize: "clamp(1.5rem,2vw,2.5rem)",
+                lineHeight: 1.2,
+              }}
+            >
+              Backend / Platform Engineer
+              <br />
+              <span
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to right,#6366f1,#38bdf8,#6ee7b7)",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                  textShadow: "0 0 20px rgba(16,185,129,0.4)",
+                  fontWeight: 600,
+                }}
+              >
+                Java • Go • Cloud • Messaging
+              </span>
+            </h1>
 
-          <p className="mt-6 text-neutral-300 text-base md:text-lg leading-relaxed max-w-xl">
-            I build secure, scalable backend services and internal platforms:
-            microservices, event-driven systems, secure tunneling, and developer
-            tooling. My focus is reliability, correctness, and observability at
-            scale.
-          </p>
+            <p
+              className="mt-3"
+              style={{
+                fontSize: "0.95rem",
+                color: "#d4d4d8",
+                lineHeight: 1.5,
+                maxWidth: "40rem",
+              }}
+            >
+              I build secure, scalable backend services and internal platforms:
+              microservices, event-driven systems, secure tunneling, and
+              developer tooling. My focus is reliability, correctness, and
+              observability at scale.
+            </p>
 
-          <p className="mt-4 text-neutral-400 text-sm leading-relaxed max-w-xl">
-            Technical Lead at HP PPS Services Pvt Ltd (3.5+ yrs). Previously 4
-            yrs at Mphasis Ltd, Bangalore. I work across Java/Spring Boot, Go,
-            Kubernetes, Solace/RabbitMQ, and secure Mongo access tooling.
-          </p>
+            <p
+              style={{
+                fontSize: "0.8rem",
+                color: "#9ca3af",
+                lineHeight: 1.5,
+                maxWidth: "40rem",
+              }}
+            >
+              Technical Lead at HP PPS Services Pvt Ltd (3.5+ yrs).
+              Previously 4 yrs at Mphasis Ltd, Bangalore. I work across
+              Java/Spring Boot, Go, Kubernetes, Solace/RabbitMQ, and secure
+              Mongo access tooling.
+            </p>
 
-          {/* "About me" deeper bio */}
-          <div className="mt-6 text-neutral-300 text-sm leading-relaxed max-w-xl space-y-4">
-            <p>
-              I specialize in building and operating event-driven microservices
-              using Spring Boot, MongoDB, RabbitMQ, Solace, Docker, and
-              Kubernetes, with CI/CD and deployment using Azure DevOps and AWS.
-            </p>
-            <p>
-              I’ve led core services in HP’s Stratus eCommerce platform such as
-              Event Handler, Solace Consumer, and RPL (Restricted Party List).
-              My work includes secure message routing, LaunchDarkly-driven
-              runtime config, MongoDB performance tuning, and production-grade
-              reliability/monitoring using Splunk and internal dashboards.
-            </p>
-            <p>
-              I also build developer-facing platforms like secure MongoDB
-              tunneling (temporary auditable access instead of permanent DB
-              exposure) and Mock Genie (mock downstream services to unblock
-              lower env dependencies). I care about stability, traceability,
-              and making teams ship faster.
-            </p>
-            <p>
-              I’m actively growing in DevOps, Cloud, and Generative AI. I
-              believe in clean architecture + automation + observability =
-              production confidence.
-            </p>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "#d4d4d8",
+                lineHeight: 1.5,
+                maxWidth: "40rem",
+              }}
+            >
+              <p className="mt-3">
+                I specialize in event-driven microservices using Spring Boot,
+                MongoDB, RabbitMQ, Solace, Docker, Kubernetes, and CI/CD
+                through Azure DevOps and AWS.
+              </p>
+              <p>
+                I’ve led core services in HP’s Stratus eCommerce platform such
+                as Event Handler, Solace Consumer, and RPL. Work includes
+                secure message routing, LaunchDarkly runtime config, MongoDB
+                access controls, and production-grade observability in Splunk.
+              </p>
+              <p>
+                I also build developer-facing platforms like secure MongoDB
+                tunneling (temporary audited DB access) and Mock Genie (mock
+                downstream services to unblock lower envs).
+              </p>
+              <p>
+                I’m growing in DevOps, Cloud, and Generative AI. I believe
+                clean architecture + automation + observability = production
+                confidence.
+              </p>
+            </div>
+
+            <div className="d-flex flex-column flex-sm-row gap-3 mt-4">
+              <a
+                href="#projects"
+                className="btn"
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                  color: "#fff",
+                  background:
+                    "linear-gradient(to right,#4f46e5,#0ea5e9)",
+                  border: "none",
+                  borderRadius: "0.75rem",
+                  boxShadow:
+                    "0 20px 60px rgba(56,189,248,0.45)",
+                }}
+              >
+                View projects
+              </a>
+
+              <a
+                href="#contact"
+                className="btn"
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 500,
+                  color: "#fff",
+                  backgroundColor: "rgba(23,23,23,0.7)",
+                  border: "1px solid rgba(82,82,82,0.8)",
+                  borderRadius: "0.75rem",
+                  boxShadow: "0 15px 40px rgba(0,0,0,0.8)",
+                }}
+              >
+                Contact me
+              </a>
+            </div>
           </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <a
-              href="#projects"
-              className="px-5 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-500 hover:to-sky-400 text-white shadow-[0_20px_60px_rgba(56,189,248,0.45)] text-center transition-all"
+          {/* RIGHT column */}
+          <div className="col-12 col-md-6">
+            <div
+              className="p-4 rounded-4 position-relative"
+              style={{
+                backgroundColor: "rgba(23,23,23,0.5)",
+                border: "1px solid #27272a",
+                boxShadow: "0 40px 120px rgba(0,0,0,0.9)",
+                overflow: "hidden",
+              }}
             >
-              View projects
-            </a>
-            <a
-              href="#contact"
-              className="px-5 py-3 rounded-xl text-sm font-medium bg-neutral-900/70 hover:bg-neutral-800 text-neutral-100 border border-neutral-700/80 shadow-[0_15px_40px_rgba(0,0,0,0.8)] text-center transition-colors"
-            >
-              Contact me
-            </a>
-          </div>
-        </div>
+              {/* glow accent */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: "-4rem",
+                  right: "-4rem",
+                  height: "10rem",
+                  width: "10rem",
+                  borderRadius: "9999px",
+                  background:
+                    "radial-gradient(circle at 30% 30%, rgba(56,189,248,0.4), rgba(0,0,0,0) 70%)",
+                  filter: "blur(40px)",
+                  opacity: 0.3,
+                  pointerEvents: "none",
+                }}
+              />
 
-        {/* RIGHT: Profile card with photo and core focus */}
-        <div className="flex-1 w-full">
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-6 shadow-[0_40px_120px_rgba(0,0,0,0.9)] relative overflow-hidden">
-            {/* glow accent */}
-            <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.4),rgba(0,0,0,0)_70%)] blur-2xl opacity-30 pointer-events-none" />
+              {/* profile */}
+              <div className="text-center">
+                <div className="position-relative d-inline-block">
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "9999px",
+                      background:
+                        "radial-gradient(circle at 40% 40%, rgba(56,189,248,0.4) 0%, rgba(0,0,0,0) 70%)",
+                      filter: "blur(30px)",
+                      opacity: 0.3,
+                    }}
+                  />
+                  <img
+                    src="/profile.jpg"
+                    alt="D Subrahmanyam"
+                    style={{
+                      position: "relative",
+                      width: "8rem",
+                      height: "8rem",
+                      objectFit: "cover",
+                      borderRadius: "9999px",
+                      border: "2px solid #38bdf8",
+                      boxShadow:
+                        "0 25px 80px rgba(56,189,248,0.4)",
+                    }}
+                  />
+                </div>
 
-            {/* Photo */}
-            <div className="flex flex-col items-center text-center">
-              <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_40%_40%,rgba(56,189,248,0.4,)_0%,rgba(0,0,0,0)_70%)] blur-xl opacity-30" />
-                <img
-                  src="/profile.jpg"
-                  alt="D Subrahmanyam"
-                  className="relative w-32 h-32 rounded-full object-cover border-2 border-sky-400 shadow-[0_25px_80px_rgba(56,189,248,0.4)]"
+                <div className="mt-3">
+                  <div
+                    style={{
+                      color: "#fff",
+                      fontWeight: 600,
+                      fontSize: "1rem",
+                    }}
+                  >
+                    D Subrahmanyam
+                  </div>
+                  <div
+                    style={{
+                      color: "#9ca3af",
+                      fontSize: "0.7rem",
+                      fontWeight: 500,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Technical Lead @ HP
+                  </div>
+                </div>
+              </div>
+
+              {/* core focus */}
+              <div
+                className="d-flex align-items-center gap-2 mt-4 mb-2 text-uppercase"
+                style={{
+                  fontSize: "0.7rem",
+                  fontWeight: 500,
+                  color: "#9ca3af",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                <span
+                  style={{
+                    display: "inline-block",
+                    height: "6px",
+                    width: "6px",
+                    borderRadius: "9999px",
+                    background:
+                      "linear-gradient(to right,#6366f1,#38bdf8)",
+                    boxShadow:
+                      "0 0 10px rgba(56,189,248,0.8)",
+                  }}
                 />
+                Core Focus
               </div>
 
-              <div className="mt-4">
-                <div className="text-white font-semibold text-base">
-                  D Subrahmanyam
-                </div>
-                <div className="text-[12px] text-neutral-400 font-medium tracking-wide uppercase">
-                  Technical Lead @ HP
-                </div>
-              </div>
+              <ul
+                className="list-unstyled"
+                style={{
+                  fontSize: "0.8rem",
+                  color: "#e5e7eb",
+                }}
+              >
+                {[
+                  "Secure microservices in Java / Spring Boot and Go",
+                  "Event-driven systems with RabbitMQ / Solace",
+                  "MongoDB, Spring Data JPA, controlled data access",
+                  "Docker, Kubernetes, Azure, AWS",
+                  "Prod reliability, Splunk / RPL observability",
+                ].map((line, i) => (
+                  <li
+                    className="d-flex"
+                    key={i}
+                    style={{ marginBottom: "0.5rem" }}
+                  >
+                    <span
+                      style={{
+                        color: "#38bdf8",
+                        marginRight: "0.5rem",
+                        fontSize: "0.7rem",
+                      }}
+                    >
+                      ●
+                    </span>
+                    <span style={{ color: "#f8fafc" }}>{line}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            {/* Core focus list */}
-            <div className="text-xs uppercase text-neutral-400 font-medium tracking-wide mt-6 mb-4 flex items-center gap-2">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.8)]" />
-              Core Focus
-            </div>
-
-            <ul className="space-y-3 text-sm text-neutral-200">
-              {[
-                "Secure microservices in Java / Spring Boot and Go",
-                "Event-driven systems with RabbitMQ / Solace",
-                "MongoDB, Spring Data JPA, controlled data access",
-                "Docker, Kubernetes, Azure, AWS",
-                "Prod reliability, Splunk / RPL observability",
-              ].map((line, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-sky-400 mt-0.5 text-xs">●</span>
-                  <span>{line}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
@@ -201,7 +548,8 @@ export default function App() {
       {/* SKILLS */}
       <section
         id="skills"
-        className="max-w-6xl mx-auto px-6 py-16 border-t border-neutral-800/60"
+        className="container py-5 border-top"
+        style={{ borderColor: "rgba(82,82,82,0.6)" }}
       >
         <SectionHeader
           id="skills-header"
@@ -209,7 +557,7 @@ export default function App() {
           blurb="Backend engineering • messaging systems • infrastructure • developer tooling"
         />
 
-        <div className="md:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm mx-auto md:ml-[33%]">
+        <div className="row row-cols-2 row-cols-sm-3 g-3 g-md-4 mt-2">
           {[
             "Java",
             "Spring Boot",
@@ -230,11 +578,23 @@ export default function App() {
             "Splunk / RPL",
             "Mock Genie",
           ].map((item) => (
-            <div
-              key={item}
-              className="bg-neutral-900/60 border border-neutral-800 rounded-xl px-3 py-2 text-neutral-200 text-center shadow-[0_20px_60px_rgba(0,0,0,0.8)] hover:shadow-[0_25px_80px_rgba(56,189,248,0.2)] hover:border-sky-500/40 hover:text-white transition-all text-xs font-medium"
-            >
-              {item}
+            <div className="col" key={item}>
+              <div
+                className="text-center h-100 d-flex align-items-center justify-content-center rounded-3"
+                style={{
+                  backgroundColor: "rgba(23,23,23,0.6)",
+                  border: "1px solid #27272a",
+                  color: "#e5e7eb",
+                  fontSize: "0.75rem",
+                  fontWeight: 500,
+                  padding: "0.75rem",
+                  minHeight: "3rem",
+                  boxShadow:
+                    "0 20px 60px rgba(0,0,0,0.8)",
+                }}
+              >
+                {item}
+              </div>
             </div>
           ))}
         </div>
@@ -243,7 +603,8 @@ export default function App() {
       {/* PROJECTS */}
       <section
         id="projects"
-        className="max-w-6xl mx-auto px-6 py-16 border-t border-neutral-800/60"
+        className="container py-5 border-top"
+        style={{ borderColor: "rgba(82,82,82,0.6)" }}
       >
         <SectionHeader
           id="projects-header"
@@ -251,57 +612,65 @@ export default function App() {
           blurb="Internal platforms and services I’ve led or contributed to"
         />
 
-        <div className="md:w-2/3 space-y-6 mx-auto md:ml-[33%]">
-          <ProjectCard
-            title="Mongo Tunneling Service"
-            tagline="Secure tunneling service for restricted MongoDB clusters."
-            bullets={[
-              "Spring Boot backend that dynamically builds Mongo URIs and opens short-lived secure tunnels.",
-              "Provides temporary, auditable access instead of permanent DB exposure.",
-            ]}
-            tech={[
-              "Java",
-              "Spring Boot",
-              "MongoDB",
-              "Security",
-              "AWS / Azure",
-            ]}
-          />
+        <div className="row gy-4 mt-2">
+          <div className="col-12 col-md-8 offset-md-4">
+            <ProjectCard
+              title="Mongo Tunneling Service"
+              tagline="Secure tunneling service for restricted MongoDB clusters."
+              bullets={[
+                "Spring Boot backend that dynamically builds Mongo URIs and opens short-lived secure tunnels.",
+                "Provides temporary, auditable access instead of permanent DB exposure.",
+              ]}
+              tech={[
+                "Java",
+                "Spring Boot",
+                "MongoDB",
+                "Security",
+                "AWS / Azure",
+              ]}
+            />
 
-          <ProjectCard
-            title="Solace / RabbitMQ Event Consumer"
-            tagline="High-reliability message consumer for event-driven flows."
-            bullets={[
-              "Consumes and processes events from Solace and RabbitMQ.",
-              "Implements retry/backoff and message confirm logic.",
-              "Integrated Splunk / RPL tracing for production debugging.",
-            ]}
-            tech={[
-              "Go",
-              "Java",
-              "Solace",
-              "RabbitMQ",
-              "Kubernetes",
-              "Splunk",
-            ]}
-          />
+            <ProjectCard
+              title="Solace / RabbitMQ Event Consumer"
+              tagline="High-reliability message consumer for event-driven flows."
+              bullets={[
+                "Consumes and processes events from Solace and RabbitMQ.",
+                "Implements retry/backoff and message confirm logic.",
+                "Integrated Splunk / RPL tracing for production debugging.",
+              ]}
+              tech={[
+                "Go",
+                "Java",
+                "Solace",
+                "RabbitMQ",
+                "Kubernetes",
+                "Splunk",
+              ]}
+            />
 
-          <ProjectCard
-            title="Mock Genie"
-            tagline="Internal mock service platform for faster dev & CI."
-            bullets={[
-              "Simulates downstream APIs so teams can test without lower env dependencies.",
-              "Improves developer velocity and CI/CD reliability.",
-            ]}
-            tech={["Go", "Docker", "Microservices", "Test Automation"]}
-          />
+            <ProjectCard
+              title="Mock Genie"
+              tagline="Internal mock service platform for faster dev & CI."
+              bullets={[
+                "Simulates downstream APIs so teams can test without lower env dependencies.",
+                "Improves developer velocity and CI/CD reliability.",
+              ]}
+              tech={[
+                "Go",
+                "Docker",
+                "Microservices",
+                "Test Automation",
+              ]}
+            />
+          </div>
         </div>
       </section>
 
       {/* EXPERIENCE */}
       <section
         id="experience"
-        className="max-w-6xl mx-auto px-6 py-16 border-t border-neutral-800/60"
+        className="container py-5 border-top"
+        style={{ borderColor: "rgba(82,82,82,0.6)" }}
       >
         <SectionHeader
           id="experience-header"
@@ -309,36 +678,39 @@ export default function App() {
           blurb="7.5+ years building backend platforms, messaging systems and developer tooling"
         />
 
-        <div className="md:w-2/3 space-y-8 mx-auto md:ml-[33%]">
-          <ExperienceItem
-            role="Technical Lead"
-            company="HP PPS Services Pvt Ltd"
-            time="June 2021 — Present (3.5+ years)"
-            bullets={[
-              "Leading backend / platform work for microservices and event-driven systems.",
-              "Architected secure MongoDB tunneling and high-reliability Solace consumers.",
-              "Implemented DevOps flows across Docker, Kubernetes, and Azure.",
-              "Improved production visibility using Splunk / RPL dashboards and tracing.",
-            ]}
-          />
+        <div className="row gy-4 mt-2">
+          <div className="col-12 col-md-8 offset-md-4">
+            <ExperienceItem
+              role="Technical Lead"
+              company="HP PPS Services Pvt Ltd"
+              time="June 2021 — Present (3.5+ years)"
+              bullets={[
+                "Leading backend / platform work for microservices and event-driven systems.",
+                "Architected secure MongoDB tunneling and high-reliability Solace consumers.",
+                "Implemented DevOps flows across Docker, Kubernetes, and Azure.",
+                "Improved production visibility using Splunk / RPL dashboards and tracing.",
+              ]}
+            />
 
-          <ExperienceItem
-            role="Software Engineer"
-            company="Mphasis Ltd, Bangalore"
-            time="May 2017 — May 2021 (4 years)"
-            bullets={[
-              "Developed and deployed Spring Boot microservices for enterprise clients.",
-              "Integrated secure messaging, REST APIs, and persistence layers.",
-              "Improved performance and reliability across production systems.",
-            ]}
-          />
+            <ExperienceItem
+              role="Software Engineer"
+              company="Mphasis Ltd, Bangalore"
+              time="May 2017 — May 2021 (4 years)"
+              bullets={[
+                "Developed and deployed Spring Boot microservices for enterprise clients.",
+                "Integrated secure messaging, REST APIs, and persistence layers.",
+                "Improved performance and reliability across production systems.",
+              ]}
+            />
+          </div>
         </div>
       </section>
 
       {/* CONTACT */}
       <section
         id="contact"
-        className="max-w-6xl mx-auto px-6 py-16 border-t border-neutral-800/60"
+        className="container py-5 border-top"
+        style={{ borderColor: "rgba(82,82,82,0.6)" }}
       >
         <SectionHeader
           id="contact-header"
@@ -346,37 +718,95 @@ export default function App() {
           blurb="Let’s build something reliable, fast, and production-ready."
         />
 
-        <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-8 shadow-[0_60px_140px_rgba(0,0,0,0.9)] md:w-2/3 mx-auto md:ml-[33%] relative overflow-hidden">
-          <div className="grid md:grid-cols-3 gap-6 text-sm text-neutral-200 relative">
-            <ContactField label="Name" value="D Subrahmanyam" />
-            <ContactField label="Email" value="subrahmanyam07.d@gmail.com" />
-            <ContactField label="GitHub" value="github.com/subbu261" />
-          </div>
+        <div className="row gy-4 mt-2">
+          <div className="col-12 col-md-8 offset-md-4">
+            <div
+              className="rounded-4 p-4 position-relative"
+              style={{
+                backgroundColor: "rgba(23,23,23,0.6)",
+                border: "1px solid #27272a",
+                boxShadow:
+                  "0 60px 140px rgba(0,0,0,0.9)",
+              }}
+            >
+              <div className="row g-4 text-sm text-light">
+                <div className="col-12 col-md-4">
+                  <ContactField
+                    label="Name"
+                    value="D Subrahmanyam"
+                  />
+                </div>
+                <div className="col-12 col-md-4">
+                  <ContactField
+                    label="Email"
+                    value="subrahmanyam07.d@gmail.com"
+                  />
+                </div>
+                <div className="col-12 col-md-4">
+                  <ContactField
+                    label="GitHub"
+                    value="github.com/subbu261"
+                  />
+                </div>
+              </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 relative">
-            <a
-              href="mailto:subrahmanyam07.d@gmail.com"
-              className="px-5 py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-500 hover:to-sky-400 text-white text-center shadow-[0_25px_80px_rgba(56,189,248,0.5)] transition-all"
+              <div className="d-flex flex-column flex-sm-row gap-3 mt-4">
+                <a
+                  href="mailto:subrahmanyam07.d@gmail.com"
+                  className="btn text-white"
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 500,
+                    background:
+                      "linear-gradient(to right,#4f46e5,#0ea5e9)",
+                    border: "none",
+                    borderRadius: "0.75rem",
+                    boxShadow:
+                      "0 25px 80px rgba(56,189,248,0.5)",
+                  }}
+                >
+                  Email me
+                </a>
+
+                <a
+                  href="https://github.com/subbu261"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn text-white"
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 500,
+                    backgroundColor: "rgba(23,23,23,0.7)",
+                    border: "1px solid rgba(82,82,82,0.8)",
+                    borderRadius: "0.75rem",
+                    boxShadow:
+                      "0 20px 60px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  GitHub Profile
+                </a>
+              </div>
+            </div>
+
+            <footer
+              className="text-center text-muted mt-5 mb-4"
+              style={{ fontSize: "0.7rem", color: "#52525b" }}
             >
-              Email me
-            </a>
-            <a
-              href="https://github.com/subbu261"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-3 rounded-xl text-sm font-medium bg-neutral-900/70 hover:bg-neutral-800 text-neutral-100 border border-neutral-700/80 text-center shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-all"
-            >
-              GitHub Profile
-            </a>
+              <div
+                style={{
+                  height: "1px",
+                  background:
+                    "linear-gradient(to right,rgba(0,0,0,0),rgba(82,82,82,0.4),rgba(0,0,0,0))",
+                  marginBottom: "1rem",
+                }}
+              />
+              <div style={{ color: "#6b7280" }}>
+                © {new Date().getFullYear()} D Subrahmanyam. All
+                rights reserved.
+              </div>
+            </footer>
           </div>
         </div>
-
-        <footer className="text-center text-[11px] text-neutral-600 mt-16 mb-10">
-          <div className="text-neutral-600 bg-gradient-to-r from-transparent via-neutral-700/40 to-transparent h-px w-full mb-4" />
-          <div className="text-neutral-500">
-            © {new Date().getFullYear()} D Subrahmanyam. All rights reserved.
-          </div>
-        </footer>
       </section>
 
       {/* RESUME (conditional render) */}
@@ -385,24 +815,46 @@ export default function App() {
   );
 }
 
-/* ────────────────────────────────────────────── */
-/* Subcomponents */
-/* ────────────────────────────────────────────── */
+/* -------------------------------- */
+/* Shared subcomponents in App.jsx  */
+/* -------------------------------- */
 
 function SectionHeader({ id, title, blurb }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-start gap-10 mb-10">
-      <div className="md:w-1/3">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="h-5 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.7)]" />
+    <div className="row mb-4 mb-md-5">
+      <div className="col-12 col-md-4">
+        <div className="d-flex align-items-center gap-2 mb-2">
+          <div
+            style={{
+              width: "4px",
+              height: "20px",
+              borderRadius: "4px",
+              background:
+                "linear-gradient(to bottom,#6366f1,#38bdf8)",
+              boxShadow:
+                "0 0 15px rgba(56,189,248,0.7)",
+            }}
+          />
           <h2
             id={id}
-            className="text-xl font-semibold text-white tracking-tight"
+            className="m-0 fw-semibold"
+            style={{
+              color: "#fff",
+              fontSize: "1.1rem",
+              lineHeight: 1.2,
+            }}
           >
             {title}
           </h2>
         </div>
-        <p className="text-neutral-400 text-sm leading-relaxed max-w-xs">
+        <p
+          style={{
+            color: "#9ca3af",
+            fontSize: "0.8rem",
+            lineHeight: 1.5,
+            maxWidth: "20rem",
+          }}
+        >
           {blurb}
         </p>
       </div>
@@ -412,26 +864,84 @@ function SectionHeader({ id, title, blurb }) {
 
 function ProjectCard({ title, tagline, bullets, tech }) {
   return (
-    <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 shadow-[0_40px_120px_rgba(0,0,0,0.9)] hover:shadow-[0_60px_160px_rgba(56,189,248,0.12)] hover:border-sky-500/40 transition-all relative overflow-hidden">
+    <div
+      className="mb-4 p-4 rounded-4 position-relative"
+      style={{
+        backgroundColor: "rgba(23,23,23,0.6)",
+        border: "1px solid #27272a",
+        boxShadow:
+          "0 40px 120px rgba(0,0,0,0.9)",
+      }}
+    >
       {/* glow accent */}
-      <div className="absolute -top-14 -right-14 h-32 w-32 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.4),rgba(0,0,0,0)_70%)] blur-2xl opacity-20 pointer-events-none" />
+      <div
+        style={{
+          position: "absolute",
+          top: "-3.5rem",
+          right: "-3.5rem",
+          height: "8rem",
+          width: "8rem",
+          borderRadius: "9999px",
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(16,185,129,0.4), rgba(0,0,0,0) 70%)",
+          filter: "blur(40px)",
+          opacity: 0.2,
+          pointerEvents: "none",
+        }}
+      />
 
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 relative">
+      <div className="d-flex flex-column flex-md-row justify-content-between gap-3">
         <div>
-          <div className="text-base font-semibold text-white flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.8)]" />
-            <span>{title}</span>
+          <div className="d-flex align-items-center gap-2">
+            <span
+              style={{
+                display: "inline-block",
+                height: "8px",
+                width: "8px",
+                borderRadius: "9999px",
+                background:
+                  "linear-gradient(to right,#6366f1,#38bdf8)",
+                boxShadow:
+                  "0 0 12px rgba(56,189,248,0.8)",
+              }}
+            />
+            <div
+              style={{
+                color: "#fff",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+              }}
+            >
+              {title}
+            </div>
           </div>
-          <div className="text-sm text-neutral-300 mt-1 leading-relaxed">
+
+          <div
+            style={{
+              color: "#d4d4d8",
+              fontSize: "0.8rem",
+              lineHeight: 1.5,
+              marginTop: "0.25rem",
+            }}
+          >
             {tagline}
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 text-[11px] text-neutral-300">
+        <div className="d-flex flex-wrap gap-2">
           {tech.map((t) => (
             <span
               key={t}
-              className="bg-neutral-800/70 border border-neutral-700/70 rounded-lg px-2 py-1 shadow-[0_10px_30px_rgba(0,0,0,0.8)] text-[11px] text-neutral-200"
+              style={{
+                backgroundColor: "rgba(38,38,38,0.7)",
+                border: "1px solid rgba(82,82,82,0.7)",
+                borderRadius: "0.5rem",
+                fontSize: "0.7rem",
+                color: "#e5e7eb",
+                padding: "0.4rem 0.5rem",
+                boxShadow:
+                  "0 10px 30px rgba(0,0,0,0.8)",
+              }}
             >
               {t}
             </span>
@@ -439,9 +949,19 @@ function ProjectCard({ title, tagline, bullets, tech }) {
         </div>
       </div>
 
-      <ul className="mt-4 text-sm text-neutral-400 space-y-2 leading-relaxed list-disc list-inside relative">
+      <ul
+        style={{
+          color: "#9ca3af",
+          fontSize: "0.8rem",
+          lineHeight: 1.5,
+          marginTop: "0.75rem",
+          paddingLeft: "1rem",
+        }}
+      >
         {bullets.map((b, i) => (
-          <li key={i}>{b}</li>
+          <li key={i} style={{ marginBottom: "0.4rem" }}>
+            {b}
+          </li>
         ))}
       </ul>
     </div>
@@ -450,28 +970,86 @@ function ProjectCard({ title, tagline, bullets, tech }) {
 
 function ExperienceItem({ role, company, time, bullets }) {
   return (
-    <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 shadow-[0_40px_120px_rgba(0,0,0,0.9)] hover:shadow-[0_60px_160px_rgba(99,102,241,0.12)] hover:border-indigo-500/40 transition-all relative overflow-hidden">
+    <div
+      className="mb-4 p-4 rounded-4 position-relative"
+      style={{
+        backgroundColor: "rgba(23,23,23,0.6)",
+        border: "1px solid #27272a",
+        boxShadow:
+          "0 40px 120px rgba(0,0,0,0.9)",
+      }}
+    >
       {/* glow accent */}
-      <div className="absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(99,102,241,0.4),rgba(0,0,0,0)_70%)] blur-2xl opacity-20 pointer-events-none" />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-3.5rem",
+          left: "-3.5rem",
+          height: "8rem",
+          width: "8rem",
+          borderRadius: "9999px",
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(99,102,241,0.4), rgba(0,0,0,0) 70%)",
+          filter: "blur(40px)",
+          opacity: 0.2,
+          pointerEvents: "none",
+        }}
+      />
 
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 relative">
+      <div className="d-flex flex-column flex-md-row justify-content-between gap-2">
         <div>
-          <div className="text-white font-semibold text-base flex items-center gap-2">
-            <span className="inline-block h-2 w-2 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_12px_rgba(99,102,241,0.8)]" />
-            <span>
+          <div
+            className="d-flex align-items-center flex-wrap gap-2"
+            style={{ fontSize: "0.95rem", fontWeight: 600 }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                height: "8px",
+                width: "8px",
+                borderRadius: "9999px",
+                background:
+                  "linear-gradient(to right,#6366f1,#38bdf8)",
+                boxShadow:
+                  "0 0 12px rgba(99,102,241,0.8)",
+              }}
+            />
+            <span style={{ color: "#fff" }}>
               {role}{" "}
-              <span className="text-neutral-500">@ {company}</span>
+              <span style={{ color: "#6b7280", fontWeight: 400 }}>
+                @ {company}
+              </span>
             </span>
           </div>
-          <div className="text-xs text-neutral-400 font-medium tracking-wide uppercase">
+
+          <div
+            style={{
+              fontSize: "0.7rem",
+              color: "#9ca3af",
+              fontWeight: 500,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              marginTop: "0.25rem",
+            }}
+          >
             {time}
           </div>
         </div>
       </div>
 
-      <ul className="mt-4 text-sm text-neutral-400 space-y-2 leading-relaxed list-disc list-inside relative">
+      <ul
+        style={{
+          color: "#9ca3af",
+          fontSize: "0.8rem",
+          lineHeight: 1.5,
+          marginTop: "0.75rem",
+          paddingLeft: "1rem",
+        }}
+      >
         {bullets.map((b, i) => (
-          <li key={i}>{b}</li>
+          <li key={i} style={{ marginBottom: "0.4rem" }}>
+            {b}
+          </li>
         ))}
       </ul>
     </div>
@@ -480,12 +1058,41 @@ function ExperienceItem({ role, company, time, bullets }) {
 
 function ContactField({ label, value }) {
   return (
-    <div className="text-left">
-      <div className="text-neutral-400 text-[10px] uppercase tracking-wide font-medium flex items-center gap-1">
-        <span className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+    <div>
+      <div
+        className="d-flex align-items-center gap-1"
+        style={{
+          color: "#9ca3af",
+          fontSize: "0.6rem",
+          fontWeight: 500,
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+        }}
+      >
+        <span
+          style={{
+            display: "inline-block",
+            height: "6px",
+            width: "6px",
+            borderRadius: "9999px",
+            background:
+              "linear-gradient(to right,#6366f1,#38bdf8)",
+            boxShadow:
+              "0 0 8px rgba(56,189,248,0.8)",
+          }}
+        />
         {label}
       </div>
-      <div className="text-white font-medium text-sm break-all">{value}</div>
+      <div
+        style={{
+          fontSize: "0.8rem",
+          color: "#fff",
+          fontWeight: 500,
+          wordBreak: "break-all",
+        }}
+      >
+        {value}
+      </div>
     </div>
   );
 }

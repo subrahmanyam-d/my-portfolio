@@ -4,27 +4,56 @@ export default function ResumeSection() {
   return (
     <section
       id="resume"
-      className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 border-t border-neutral-800/60 scroll-mt-24"
+      className="container py-5 border-top"
+      style={{
+        borderColor: "rgba(82,82,82,0.6)",
+        scrollMarginTop: "6rem", // navbar offset for smooth scroll
+      }}
     >
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-start gap-6 sm:gap-10 mb-8 sm:mb-10">
-        <div className="md:w-1/3">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="h-4 w-1 rounded-full bg-gradient-to-b from-indigo-400 to-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.7)]" />
+      {/* Header row */}
+      <div className="row g-4 mb-4 mb-md-5">
+        {/* Left: heading + intro */}
+        <div className="col-12 col-md-4">
+          <div className="d-flex align-items-center gap-2 mb-2">
+            <div
+              style={{
+                width: "4px",
+                height: "16px",
+                borderRadius: "4px",
+                background:
+                  "linear-gradient(to bottom,#6366f1,#38bdf8)",
+                boxShadow:
+                  "0 0 10px rgba(56,189,248,0.7)",
+              }}
+            />
             <h2
               id="resume-header"
-              className="text-lg sm:text-xl font-semibold text-white tracking-tight"
+              className="m-0 fw-semibold"
+              style={{
+                color: "#fff",
+                fontSize: "1rem",
+                lineHeight: 1.2,
+              }}
             >
               Complete Resume
             </h2>
           </div>
-          <p className="text-neutral-400 text-sm leading-relaxed max-w-xs">
-            Full professional résumé with career history, projects, and education.
+
+          <p
+            style={{
+              color: "#9ca3af",
+              fontSize: "0.8rem",
+              lineHeight: 1.5,
+              maxWidth: "20rem",
+            }}
+          >
+            Full professional résumé with career history, projects, and
+            education.
           </p>
         </div>
 
-        {/* Quick badges */}
-        <div className="md:w-2/3 flex flex-wrap gap-2 sm:gap-3 text-[10px] sm:text-[11px]">
+        {/* Right: quick badges */}
+        <div className="col-12 col-md-8 d-flex flex-wrap gap-2">
           {[
             "Technical Lead @ HP",
             "7.5+ yrs Backend / Platform",
@@ -33,7 +62,18 @@ export default function ResumeSection() {
           ].map((badge, idx) => (
             <span
               key={idx}
-              className="bg-neutral-900/60 border border-neutral-700/60 text-neutral-200 rounded-lg px-2 sm:px-3 py-1 font-medium shadow-[0_15px_40px_rgba(0,0,0,0.8)]"
+              className="rounded-3"
+              style={{
+                backgroundColor: "rgba(23,23,23,0.6)",
+                border: "1px solid rgba(82,82,82,0.6)",
+                color: "#e5e7eb",
+                fontSize: "0.7rem",
+                fontWeight: 500,
+                padding: "0.4rem 0.6rem",
+                boxShadow:
+                  "0 15px 40px rgba(0,0,0,0.8)",
+                whiteSpace: "nowrap",
+              }}
             >
               {badge}
             </span>
@@ -41,46 +81,115 @@ export default function ResumeSection() {
         </div>
       </div>
 
-      {/* Resume body */}
-      <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl p-5 sm:p-8 shadow-[0_40px_100px_rgba(0,0,0,0.9)] text-neutral-200 relative overflow-hidden">
-        <div className="absolute -top-16 -right-16 h-32 w-32 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.2),rgba(0,0,0,0)_70%)] blur-3xl opacity-40 pointer-events-none" />
+      {/* Resume card */}
+      <div
+        className="rounded-4 position-relative"
+        style={{
+          backgroundColor: "rgba(23,23,23,0.6)",
+          border: "1px solid #27272a",
+          boxShadow: "0 40px 100px rgba(0,0,0,0.9)",
+          color: "#e5e7eb",
+          padding: "1.25rem 1.25rem 2rem",
+        }}
+      >
+        {/* glow accent */}
+        <div
+          style={{
+            position: "absolute",
+            top: "-4rem",
+            right: "-4rem",
+            height: "8rem",
+            width: "8rem",
+            borderRadius: "9999px",
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(56,189,248,0.2), rgba(0,0,0,0) 70%)",
+            filter: "blur(50px)",
+            opacity: 0.4,
+            pointerEvents: "none",
+          }}
+        />
 
-        <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">D Subrahmanyam</h3>
-        <p className="text-xs sm:text-sm text-neutral-400 mb-6">
+        {/* Name & Contact */}
+        <h3
+          className="fw-bold mb-1"
+          style={{
+            color: "#fff",
+            fontSize: "1.25rem",
+            lineHeight: 1.2,
+          }}
+        >
+          D Subrahmanyam
+        </h3>
+
+        <p
+          className="mb-4"
+          style={{
+            fontSize: "0.75rem",
+            color: "#9ca3af",
+            lineHeight: 1.4,
+          }}
+        >
           Email:{" "}
           <a
             href="mailto:subrahmanyam07.d@gmail.com"
-            className="text-sky-400 hover:text-sky-300"
+            style={{
+              color: "#38bdf8",
+              textDecoration: "none",
+            }}
           >
             subrahmanyam07.d@gmail.com
           </a>{" "}
           | Phone: +91-9844158385
         </p>
 
-        {/* Sections */}
-        <Section title="Career Objective">
-          To build and deliver secure, reliable, high-performance backend platforms and event-driven services at scale. I focus on clean architecture, observability, and automation to improve developer velocity and production stability.
-        </Section>
+        {/* Career Objective */}
+        <ResumeBlock title="Career Objective">
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: "#d4d4d8",
+              lineHeight: 1.6,
+              marginBottom: 0,
+            }}
+          >
+            To build and deliver secure, reliable, high-performance backend
+            platforms and event-driven services at scale. I focus on clean
+            architecture, observability, and automation to improve developer
+            velocity and production stability.
+          </p>
+        </ResumeBlock>
 
-        <ListSection
+        {/* Professional Summary */}
+        <ResumeList
           title="Professional Summary"
           items={[
             "~7.5 years of experience in backend engineering and production support.",
             "Technical Lead at HP PPS Services Pvt Ltd (3.5+ yrs).",
             "4 years at Mphasis Ltd developing Spring Boot microservices.",
-            "Expertise in Java, Spring Boot, Go, MongoDB, RabbitMQ, Solace, Docker, K8s, AWS, Azure.",
+            "Expertise in Java, Spring Boot, Go, MongoDB, RabbitMQ, Solace, Docker, Kubernetes, AWS, Azure.",
             "Architected secure MongoDB tunneling and Solace consumers.",
             "Experience with Splunk, RPL, and LaunchDarkly configuration.",
           ]}
         />
 
-        <Section title="Core Skills">
-          Java, Go, Spring Boot, Spring Data JPA, Security, REST APIs, Microservices,
-          RabbitMQ, Solace, MongoDB, Docker, Kubernetes, AWS, Azure, LaunchDarkly,
-          Splunk, CI/CD, Observability, DevOps.
-        </Section>
+        {/* Core Skills */}
+        <ResumeBlock title="Core Skills">
+          <p
+            style={{
+              fontSize: "0.8rem",
+              color: "#d4d4d8",
+              lineHeight: 1.6,
+              marginBottom: 0,
+            }}
+          >
+            Java, Go, Spring Boot, Spring Data JPA, Security, REST APIs,
+            Microservices, RabbitMQ, Solace, MongoDB, Docker, Kubernetes,
+            AWS, Azure, LaunchDarkly, Splunk, CI/CD, Observability, DevOps.
+          </p>
+        </ResumeBlock>
 
-        <ListSection
+        {/* Professional Experience */}
+        <ResumeList
           title="Professional Experience"
           items={[
             "HP PPS Services Pvt Ltd — Technical Lead | Jun 2021 – Present",
@@ -88,7 +197,8 @@ export default function ResumeSection() {
           ]}
         />
 
-        <ListSection
+        {/* Key Projects */}
+        <ResumeList
           title="Key Projects"
           items={[
             "Event Handler: Spring Boot service for reliable event transformation and routing with RabbitMQ and Solace.",
@@ -99,7 +209,8 @@ export default function ResumeSection() {
           ]}
         />
 
-        <ListSection
+        {/* Education */}
+        <ResumeList
           title="Education"
           items={[
             "MCA – SRKR Engineering College, Bhimavaram (80%)",
@@ -108,7 +219,8 @@ export default function ResumeSection() {
           ]}
         />
 
-        <ListSection
+        {/* Personal Details */}
+        <ResumeList
           title="Personal Details"
           items={[
             "Date of Birth: 12 March 1994",
@@ -119,43 +231,97 @@ export default function ResumeSection() {
         />
 
         {/* Download button */}
-        <div className="mt-8 text-center">
+        <div className="text-center mt-4 mt-md-5">
           <a
             href="/D_Subrahmanyam_Resume.pdf"
             download
-            className="inline-block w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-500 hover:to-sky-400 text-white text-sm font-medium px-5 py-3 rounded-lg shadow-[0_15px_40px_rgba(56,189,248,0.4)] transition-all"
+            className="btn w-100 w-sm-auto text-white"
+            style={{
+              fontSize: "0.8rem",
+              fontWeight: 500,
+              background:
+                "linear-gradient(to right,#4f46e5,#0ea5e9)",
+              border: "none",
+              borderRadius: "0.75rem",
+              boxShadow:
+                "0 15px 40px rgba(56,189,248,0.4)",
+              padding: "0.9rem 1.25rem",
+              maxWidth: "16rem",
+            }}
           >
             Download Resume (PDF)
           </a>
-          <p className="text-[11px] text-neutral-500 mt-3">
-            Latest version includes Event Handler, Solace Consumer, Mongo Tunneling, Mock Genie & Moneta/RPL.
-          </p>
+
+          <div
+            style={{
+              fontSize: "0.7rem",
+              color: "#6b7280",
+              marginTop: "0.75rem",
+              lineHeight: 1.4,
+            }}
+          >
+            Latest version includes Event Handler, Solace Consumer,
+            Mongo Tunneling, Mock Genie & Moneta/RPL.
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function Section({ title, children }) {
+/* helpers */
+
+function ResumeBlock({ title, children }) {
   return (
-    <div className="mt-6 sm:mt-8">
-      <h4 className="text-base sm:text-lg font-semibold text-white mb-2">
+    <div className="mt-4 mt-md-5">
+      <h4
+        className="fw-semibold mb-2"
+        style={{
+          color: "#fff",
+          fontSize: "0.9rem",
+          lineHeight: 1.3,
+        }}
+      >
         {title}
       </h4>
-      <p className="text-sm text-neutral-300 leading-relaxed">{children}</p>
+      {children}
     </div>
   );
 }
 
-function ListSection({ title, items }) {
+function ResumeList({ title, items }) {
   return (
-    <div className="mt-6 sm:mt-8">
-      <h4 className="text-base sm:text-lg font-semibold text-white mb-2">
+    <div className="mt-4 mt-md-5">
+      <h4
+        className="fw-semibold mb-2"
+        style={{
+          color: "#fff",
+          fontSize: "0.9rem",
+          lineHeight: 1.3,
+        }}
+      >
         {title}
       </h4>
-      <ul className="list-disc list-inside text-sm text-neutral-300 space-y-2 leading-relaxed">
+
+      <ul
+        style={{
+          color: "#d4d4d8",
+          fontSize: "0.8rem",
+          lineHeight: 1.6,
+          paddingLeft: "1rem",
+          marginBottom: 0,
+        }}
+      >
         {items.map((item, i) => (
-          <li key={i}>{item}</li>
+          <li
+            key={i}
+            style={{
+              marginBottom: "0.5rem",
+              listStyleType: "disc",
+            }}
+          >
+            {item}
+          </li>
         ))}
       </ul>
     </div>
